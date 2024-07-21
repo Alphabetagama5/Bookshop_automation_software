@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookstore Management System</title>
+  <style>
+    body {
+      background-color: #f9f9f9;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #000;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      background-color: #333;
+      padding: 10px;
+    }
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    nav ul li {
+      display: inline-block;
+      margin-right: 10px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+    }
+    nav ul li a:hover {
+      background-color: #777;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    input[type="submit"] {
+      background-color: #000;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table th, table td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ccc;
+    }
+    table th {
+      background-color: #f2f2f2;
+    }
+    .btn-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-container button {
+      margin-left: 5px;
+      background-color: #000;
+      color: #fff;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn-container button:hover {
+      background-color: #333;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>DataFlair Bookstore Management System</h1>
+  </header>
+  <nav>
+    <ul>
+      {% if user.is_authenticated %}
+      <li style="color: #fff;"><h4>{{ user.username }}</h4></li>
+      {% endif %}
+      <li><a href="{% url 'add' %}">Add book</a></li>
+      <li class="logout"><a href="{% url 'logout' %}">logout</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <h2>Search Book</h2>
+    <form method="get">
+      <label for="search">Search:</label>
+      <input type="text" id="search" name="search" placeholder="Enter book title or author">
+      <br><br>
+      <input type="submit" value="Search">
+    </form>
+
+    <h2>Book List</h2>
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Genre</th>
+        <th>Price</th>
+        <th></th>
+      </tr>
+      {% if queryset %}
+      {% for item in queryset %}
+      <tr>
+        <td>{{item.title}}</td>
+        <td>{{item.author}}</td>
+        <td>{{item.isbn}}</td>
+        <td>{{item.genre}}</td>
+        <td>{{item.price}}</td>
+        <td class="btn-container">
+          <button ><a href="{% url 'delete' pk=item.pk %}" style="color: #fff;">Delete</a></button>
+          <button><a href="{% url 'updated_data' pk=item.pk %}" style="color: #fff;">Update</a></button>
+        </td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+    </table>
+  </div>
+</body>
+</html>
